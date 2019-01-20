@@ -101,6 +101,7 @@ sudo make install > install.log 2>&1
 cd ..
 
 echo "Setup nginx"
+sudo mkdir -p /var/cache/nginx
 sudo ln -f -s /usr/lib64/nginx/modules /etc/nginx/modules 
 sudo useradd --system --home /var/cache/nginx --shell /sbin/nologin --comment "nginx user" --user-group nginx
 
@@ -158,8 +159,6 @@ sudo mkdir -p /var/www/dynhost.test
 
 sudo cp -r www /var/www/dynhost.test
 
-sudo chown -R nginx.nginx /var/www
-
 echo "Installing php-fpm..."
 sudo yum install php php-mysql php-fpm -y
 
@@ -170,6 +169,16 @@ sudo systemctl enable php-fpm.service
 echo "Statring php-fpm..."
 sudo systemctl start php-fpm
 
+echo "Disabling SELinux..."
+sudo setenforce 0
+#restorecon -R -v /var/www/dynhost.test/www/upload.php
+#restorecon -R -v /var/www/dynhost.test/www/check.php
+
+sudo chown -R nginx.nginx /var/www
+
+echo "Openining 80 port"
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
 
 echo "Starting nginx..."
 sudo systemctl start nginx.service

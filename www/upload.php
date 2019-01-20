@@ -18,7 +18,7 @@
       exit();
     }
 
-    $domain = $_POST['sub_dom_name'].'.'.parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
+    $domain = $_POST['sub_dom_name'].'.'.$_SERVER['SERVER_NAME'];
     $sdm_path = "/var/www/$domain/www";
     $site_archive = $_POST['file_path'];
 

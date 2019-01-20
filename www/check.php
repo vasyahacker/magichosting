@@ -11,7 +11,7 @@
 	    response('error','Inavalid subdomain name!');
 	    exit();
 	}
-	if(file_exists('/var/www/'.$subdomain.'.'.parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST))) {
+	if(file_exists('/var/www/'.$subdomain.'.'.$_SERVER['SERVER_NAME'])) {
 	    response('error','Subdomain '.$subdomain.' already exist!');
 	    exit();
 	}
