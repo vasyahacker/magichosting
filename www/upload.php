@@ -23,10 +23,12 @@
     $site_archive = $_POST['file_path'];
 
     if(file_exists($sdm_path)) {
+      unlink($site_archive);
       response('error', 'Site '.$domain.' already exist!');
       exit();
     }
     if(!mkdir($sdm_path, 0755, true)) {
+      unlink($site_archive);
       response('error', 'Create dir error!');
       exit();
     }
@@ -38,6 +40,7 @@
       $zip->close();
       response('success', 'Your site address: <a href="http://'.$domain.'">'.$domain.'</a>');
     } else {
+      unlink($site_archive);
       response('error', "Couldn't open athive!");
       exit();
     }
